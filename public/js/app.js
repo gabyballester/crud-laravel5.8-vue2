@@ -2033,6 +2033,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2101,6 +2102,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2);
       }))();
+    },
+    cancelarEdicion: function cancelarEdicion() {
+      var me = this;
+      me.editarActivo = false;
+      me.nota = {
+        nombre: "",
+        descripcion: ""
+      };
     },
     agregar: function agregar() {
       var _this3 = this;
@@ -38790,9 +38799,28 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("button", { staticClass: "btn btn-success btn-sm mt-2" }, [
-              _vm._v("Guardar")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success btn-sm mt-2",
+                attrs: { type: "submit" }
+              },
+              [_vm._v("Guardar")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger btn-sm mt-2",
+                attrs: { type: "submit" },
+                on: {
+                  click: function($event) {
+                    return _vm.cancelarEdicion()
+                  }
+                }
+              },
+              [_vm._v("Cancelar")]
+            )
           ]
         )
       : _c(
@@ -38801,7 +38829,7 @@ var render = function() {
             on: {
               submit: function($event) {
                 $event.preventDefault()
-                return _vm.agregar()
+                return _vm.agregar.apply(null, arguments)
               }
             }
           },

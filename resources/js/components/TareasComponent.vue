@@ -14,10 +14,11 @@
                 class="form-control mb-2"
                 v-model="nota.descripcion"
             />
-            <button class="btn btn-success btn-sm mt-2">Guardar</button>
+            <button class="btn btn-success btn-sm mt-2" type="submit">Guardar</button>
+            <button class="btn btn-danger btn-sm mt-2" type="submit" @click="cancelarEdicion()">Cancelar</button>
         </form>
 
-        <form @submit.prevent="agregar()" v-else>
+        <form @submit.prevent="agregar" v-else>
             <h3>Agregar Nota</h3>
             <input
                 type="text"
@@ -93,6 +94,11 @@ export default {
             const me = this;
             const { data } = await axios.get("/notas");
             me.notas = await data;
+        },
+        cancelarEdicion(){
+            const me = this;
+            me.editarActivo = false;
+            me.nota = { nombre: "", descripcion: "" };
         },
         async agregar() {
             const me = this;
