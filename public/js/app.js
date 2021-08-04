@@ -1998,6 +1998,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2025,9 +2028,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return me.getNotes();
 
             case 3:
-              console.log(me.notas);
-
-            case 4:
             case "end":
               return _context.stop();
           }
@@ -2048,7 +2048,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 me = _this2;
                 _context2.next = 3;
-                return axios.get('/notas');
+                return axios.get("/notas");
 
               case 3:
                 _yield$axios$get = _context2.sent;
@@ -2109,6 +2109,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee3);
+      }))();
+    },
+    eliminarNota: function eliminarNota(item, index) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios["delete"]("/notas/".concat(item.id));
+
+              case 2:
+                response = _context4.sent;
+
+                if (response) {
+                  _this4.notas.splice(index, 1);
+                }
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
       }))();
     }
   }
@@ -38666,7 +38693,20 @@ var render = function() {
           _vm._v(" "),
           _c("p", [_vm._v(_vm._s(item.nombre))]),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(item.descripcion))])
+          _c("p", [_vm._v(_vm._s(item.descripcion))]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-danger btn-sm",
+              on: {
+                click: function($event) {
+                  return _vm.eliminarNota(item)
+                }
+              }
+            },
+            [_vm._v("\n                Eliminar\n            ")]
+          )
         ])
       }),
       0

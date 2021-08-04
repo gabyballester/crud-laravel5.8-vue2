@@ -30,6 +30,9 @@
                 </span>
                 <p>{{ item.nombre }}</p>
                 <p>{{ item.descripcion }}</p>
+                <button class="btn btn-danger btn-sm" @click="eliminarNota(item)">
+                    Eliminar
+                </button>
             </li>
         </ul>
     </div>
@@ -49,12 +52,11 @@ export default {
     async created() {
         const me = this;
         await me.getNotes();
-        console.log(me.notas);
     },
     methods: {
         async getNotes() {
             const me = this;
-            const { data } = await axios.get('/notas');
+            const { data } = await axios.get("/notas");
             me.notas = await data;
         },
         async agregar() {
@@ -70,6 +72,12 @@ export default {
             const response = await axios.post("/notas", nuevaNota);
             if (response) {
                 me.notas.push(response.data);
+            }
+        },
+        async eliminarNota(item, index) {
+            const response = await axios.delete(`/notas/${item.id}`);
+            if (response) {
+                this.notas.splice(index, 1);
             }
         }
     }
