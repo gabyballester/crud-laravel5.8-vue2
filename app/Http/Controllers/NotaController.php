@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Nota;
 use Illuminate\Http\Request;
 
 class NotaController extends Controller
@@ -11,9 +12,13 @@ class NotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()){
+            return Nota::where('user_id', auth()->id())->get();
+        }else{
+            return view('home');
+        }
     }
 
     /**
@@ -34,9 +39,14 @@ class NotaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $nota = new Nota();
+        $nota->nombre = $request->nombre;
+        $nota->descripcion = $request->descripcion;
+        $nota->user_id = auth()->id();
+        $nota->save();
 
+        return $nota;
+    }  
     /**
      * Display the specified resource.
      *
