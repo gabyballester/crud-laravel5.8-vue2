@@ -2027,6 +2027,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2037,8 +2043,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       editarActivo: false,
       val: {
-        empty: "Debes completar todos los campos antes de guardar"
-      }
+        empty: "Debes completar todos los campos antes de guardar",
+        updateError: "Error al actualizar"
+      },
+      errors: []
     };
   },
   created: function created() {
@@ -2166,11 +2174,63 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    editarNota: function editarNota(nota) {
+    editarFormulario: function editarFormulario(item) {
       var me = this;
       me.editarActivo = true;
-      me.nota.nombre = nota.nombre;
-      me.nota.descripcion = nota.descripcion;
+      me.nota.nombre = item.nombre;
+      me.nota.descripcion = item.descripcion;
+      me.nota.id = item.id;
+    },
+    editarNota: function editarNota(item) {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var me, params, response, index, _me, _me2;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                me = _this5;
+                params = {
+                  nombre: item.nombre,
+                  descripcion: item.descripcion
+                };
+                _context5.next = 5;
+                return axios.put("/notas/".concat(item.id), params);
+
+              case 5:
+                response = _context5.sent;
+
+                if (response.status === 200) {
+                  index = me.notas.findIndex(function () {
+                    return item.id === response.data.id;
+                  });
+                  me.notas[index] = response.data;
+                  me.editarActivo = false;
+                } else {
+                  _me = _this5;
+                  _me.errors = _me.val.updateError;
+                }
+
+                _context5.next = 13;
+                break;
+
+              case 9:
+                _context5.prev = 9;
+                _context5.t0 = _context5["catch"](0);
+                _me2 = _this5;
+
+                _me2.errors.push(_context5.t0);
+
+              case 13:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, null, [[0, 9]]);
+      }))();
     }
   }
 });
@@ -38658,7 +38718,7 @@ var render = function() {
             on: {
               submit: function($event) {
                 $event.preventDefault()
-                return _vm.agregar()
+                return _vm.editarNota(_vm.nota)
               }
             }
           },
@@ -38709,7 +38769,7 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("button", { staticClass: "btn btn-success btn-sm" }, [
+            _c("button", { staticClass: "btn btn-success btn-sm mt-2" }, [
               _vm._v("Guardar")
             ])
           ]
@@ -38771,11 +38831,26 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("button", { staticClass: "btn btn-primary btn-sm" }, [
+            _c("button", { staticClass: "btn btn-primary btn-sm mt-2" }, [
               _vm._v("Agregar")
             ])
           ]
         ),
+    _vm._v(" "),
+    _vm.errors.length
+      ? _c(
+          "div",
+          { staticClass: "mt-2" },
+          _vm._l(_vm.errors, function(error, index) {
+            return _c("div", { key: index }, [
+              _c("span", { staticClass: "text-danger font-weight-bolder" }, [
+                _vm._v(_vm._s(error))
+              ])
+            ])
+          }),
+          0
+        )
+      : _vm._e(),
     _vm._v(" "),
     _c("hr", { staticClass: "mt-3" }),
     _vm._v(" "),
@@ -38786,16 +38861,20 @@ var render = function() {
       { staticClass: "list-group my-2" },
       _vm._l(_vm.notas, function(item, index) {
         return _c("li", { key: index, staticClass: "list-group-item" }, [
-          _c("span", { staticClass: "badge badge-primary float-right" }),
+          _c("span", { staticClass: "badge badge-primary float-right" }, [
+            _vm._v(
+              "\n                " + _vm._s(item.updated_at) + "\n            "
+            )
+          ]),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(item.nombre))]),
+          _c("p", { staticClass: "mb-0" }, [_vm._v(_vm._s(item.nombre))]),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(item.descripcion))]),
+          _c("p", { staticClass: "mb-0" }, [_vm._v(_vm._s(item.descripcion))]),
           _vm._v(" "),
           _c(
             "button",
             {
-              staticClass: "btn btn-danger btn-sm",
+              staticClass: "btn btn-danger btn-sm mt-1",
               on: {
                 click: function($event) {
                   return _vm.eliminarNota(item)
@@ -38808,10 +38887,10 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-warning btn-sm",
+              staticClass: "btn btn-warning btn-sm mt-1",
               on: {
                 click: function($event) {
-                  return _vm.editarNota(item)
+                  return _vm.editarFormulario(item)
                 }
               }
             },

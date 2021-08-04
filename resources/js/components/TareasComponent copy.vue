@@ -51,16 +51,16 @@
                 <span class="badge badge-primary float-right">
                     {{ item.updated_at }}
                 </span>
-                <p class="mb-0">{{ item.nombre }}</p>
-                <p class="mb-0">{{ item.descripcion }}</p>
+                <p>{{ item.nombre }}</p>
+                <p>{{ item.descripcion }}</p>
                 <button
-                    class="btn btn-danger btn-sm mt-1"
+                    class="btn btn-danger btn-sm"
                     @click="eliminarNota(item)"
                 >
                     Eliminar
                 </button>
                 <button
-                    class="btn btn-warning btn-sm mt-1"
+                    class="btn btn-warning btn-sm"
                     @click="editarFormulario(item)"
                 >
                     Editar
@@ -131,10 +131,12 @@ export default {
                     descripcion: item.descripcion
                 };
                 const response = await axios.put(`/notas/${item.id}`, params);
+                console.log("response");
+                console.log(response);
                 if (response.status === 200) {
-                    const index = me.notas.findIndex(
-                        () => item.id === response.data.id
-                    );
+                    const index = me.notas.findIndex(index => {
+                        item.id === response.data.id;
+                    });
                     me.notas[index] = response.data;
                     me.editarActivo = false;
                 } else {
