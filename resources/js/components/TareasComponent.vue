@@ -16,6 +16,22 @@
             />
             <button class="btn btn-warning btn-sm">Guardar</button>
         </form>
+
+        <hr class="mt-3" />
+        <h3>Lista de notas:</h3>
+        <ul class="list-group my-2">
+            <li
+                class="list-group-item"
+                v-for="(item, index) in notas"
+                :key="index"
+            >
+                <span class="badge badge-primary float-right">
+                    <!-- {{ item.updated_at }} -->
+                </span>
+                <p>{{ item.nombre }}</p>
+                <p>{{ item.descripcion }}</p>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -30,8 +46,18 @@ export default {
             }
         };
     },
+    async created() {
+        const me = this;
+        await me.getNotes();
+        console.log(me.notas);
+    },
     methods: {
-        agregar() {
+        async getNotes() {
+            const me = this;
+            const { data } = await axios.get('/notas');
+            me.notas = await data;
+        },
+        async agregar() {
             const me = this;
             const nuevaNota = me.nota;
             const { nombre, descripcion } = nuevaNota;
@@ -41,8 +67,10 @@ export default {
             }
             me.nota = { nombre: "", descripcion: "" };
 
-            console.log(nuevaNota);
-            axios.post("/notas", nuevaNota);
+            const response = await axios.post("/notas", nuevaNota);
+            if (response) {
+                me.notas.push(response.data);
+            }
         }
     }
 };
