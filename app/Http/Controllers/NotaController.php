@@ -93,6 +93,7 @@ class NotaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $nota = Nota::find($id);
+        $nota->delete();
     }
 }
