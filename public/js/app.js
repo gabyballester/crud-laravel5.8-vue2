@@ -1947,7 +1947,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      notas: [],
+      nota: {
+        nombre: "",
+        descripcion: ""
+      },
+      val: {
+        empty: "Debes completar todos los campos antes de guardar"
+      }
+    };
+  },
+  methods: {
+    agregar: function agregar() {
+      var me = this;
+      var nuevaNota = me.nota;
+      var nombre = nuevaNota.nombre,
+          descripcion = nuevaNota.descripcion;
+
+      if (nombre.trim() === "" || descripcion.trim() === "") {
+        alert(me.val.empty);
+        return;
+      }
+
+      me.nota = {
+        nombre: "",
+        descripcion: ""
+      };
+      console.log(nuevaNota);
+      axios.post("/notas", nuevaNota);
+    }
+  }
+});
 
 /***/ }),
 
@@ -37659,16 +37707,72 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("h3", [_vm._v("Agregar Notas")]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.agregar()
+          }
+        }
+      },
+      [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.nota.nombre,
+              expression: "nota.nombre"
+            }
+          ],
+          staticClass: "form-control mb-2",
+          attrs: { type: "text", placeholder: "Nombre" },
+          domProps: { value: _vm.nota.nombre },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.nota, "nombre", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.nota.descripcion,
+              expression: "nota.descripcion"
+            }
+          ],
+          staticClass: "form-control mb-2",
+          attrs: { type: "text", placeholder: "Descripción" },
+          domProps: { value: _vm.nota.descripcion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.nota, "descripcion", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-warning btn-sm" }, [
+          _vm._v("Guardar")
+        ])
+      ]
+    )
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h3", [_vm._v("Agregar Tareas")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
