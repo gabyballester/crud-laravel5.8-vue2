@@ -110,10 +110,18 @@ export default {
             }
         },
         async eliminarNota(item, index) {
-            const me = this;
-            const response = await axios.delete(`/notas/${item.id}`);
-            if (response) {
-                me.notas.splice(index, 1);
+            try {
+                const me = this;
+                const response = await axios.delete(`/notas/${item.id}`);
+                if (response.status === 200) {
+                    me.notas = me.notas.filter(nota => nota.id !== item.id);
+                } else {
+                    const me = this;
+                    me.errors = me.val.updateError;
+                }
+            } catch (error) {
+                const me = this;
+                me.errors.push(error);
             }
         },
         editarFormulario(item) {
@@ -123,19 +131,20 @@ export default {
             me.nota.descripcion = item.descripcion;
             me.nota.id = item.id;
         },
-        async editarNota(item) {
+        async editarNota(nota) {
             try {
                 const me = this;
                 const params = {
-                    nombre: item.nombre,
-                    descripcion: item.descripcion
+                    nombre: nota.nombre,
+                    descripcion: nota.descripcion
                 };
-                const response = await axios.put(`/notas/${item.id}`, params);
+                const response = await axios.put(`/notas/${nota.id}`, params);
                 if (response.status === 200) {
                     const index = me.notas.findIndex(
-                        () => item.id === response.data.id
+                        item => item.id === nota.id
                     );
                     me.notas[index] = response.data;
+                    me.nota = { nombre: "", descripcion: "" };
                     me.editarActivo = false;
                 } else {
                     const me = this;

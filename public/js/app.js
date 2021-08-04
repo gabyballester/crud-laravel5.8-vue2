@@ -2150,28 +2150,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-        var me, response;
+        var me, response, _me, _me2;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
+                _context4.prev = 0;
                 me = _this4;
-                _context4.next = 3;
+                _context4.next = 4;
                 return axios["delete"]("/notas/".concat(item.id));
 
-              case 3:
+              case 4:
                 response = _context4.sent;
 
-                if (response) {
-                  me.notas.splice(index, 1);
+                if (response.status === 200) {
+                  me.notas = me.notas.filter(function (nota) {
+                    return nota.id !== item.id;
+                  });
+                } else {
+                  _me = _this4;
+                  _me.errors = _me.val.updateError;
                 }
 
-              case 5:
+                _context4.next = 12;
+                break;
+
+              case 8:
+                _context4.prev = 8;
+                _context4.t0 = _context4["catch"](0);
+                _me2 = _this4;
+
+                _me2.errors.push(_context4.t0);
+
+              case 12:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4);
+        }, _callee4, null, [[0, 8]]);
       }))();
     },
     editarFormulario: function editarFormulario(item) {
@@ -2181,11 +2198,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       me.nota.descripcion = item.descripcion;
       me.nota.id = item.id;
     },
-    editarNota: function editarNota(item) {
+    editarNota: function editarNota(nota) {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
-        var me, params, response, index, _me, _me2;
+        var me, params, response, index, _me3, _me4;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
@@ -2194,24 +2211,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context5.prev = 0;
                 me = _this5;
                 params = {
-                  nombre: item.nombre,
-                  descripcion: item.descripcion
+                  nombre: nota.nombre,
+                  descripcion: nota.descripcion
                 };
                 _context5.next = 5;
-                return axios.put("/notas/".concat(item.id), params);
+                return axios.put("/notas/".concat(nota.id), params);
 
               case 5:
                 response = _context5.sent;
 
                 if (response.status === 200) {
-                  index = me.notas.findIndex(function () {
-                    return item.id === response.data.id;
+                  index = me.notas.findIndex(function (item) {
+                    return item.id === nota.id;
                   });
                   me.notas[index] = response.data;
+                  me.nota = {
+                    nombre: "",
+                    descripcion: ""
+                  };
                   me.editarActivo = false;
                 } else {
-                  _me = _this5;
-                  _me.errors = _me.val.updateError;
+                  _me3 = _this5;
+                  _me3.errors = _me3.val.updateError;
                 }
 
                 _context5.next = 13;
@@ -2220,9 +2241,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 9:
                 _context5.prev = 9;
                 _context5.t0 = _context5["catch"](0);
-                _me2 = _this5;
+                _me4 = _this5;
 
-                _me2.errors.push(_context5.t0);
+                _me4.errors.push(_context5.t0);
 
               case 13:
               case "end":
