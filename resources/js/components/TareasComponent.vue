@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h3>Agregar Notas</h3>
-        <form @submit.prevent="agregar()">
+        <form @submit.prevent="agregar()" v-if="editarActivo">
+            <h3>Editar Nota</h3>
             <input
                 type="text"
                 placeholder="Nombre"
@@ -14,7 +14,24 @@
                 class="form-control mb-2"
                 v-model="nota.descripcion"
             />
-            <button class="btn btn-warning btn-sm">Guardar</button>
+            <button class="btn btn-success btn-sm">Guardar</button>
+        </form>
+
+        <form @submit.prevent="agregar()" v-else>
+            <h3>Agregar Nota</h3>
+            <input
+                type="text"
+                placeholder="Nombre"
+                class="form-control mb-2"
+                v-model="nota.nombre"
+            />
+            <input
+                type="text"
+                placeholder="Descripción"
+                class="form-control mb-2"
+                v-model="nota.descripcion"
+            />
+            <button class="btn btn-primary btn-sm">Agregar</button>
         </form>
 
         <hr class="mt-3" />
@@ -30,8 +47,17 @@
                 </span>
                 <p>{{ item.nombre }}</p>
                 <p>{{ item.descripcion }}</p>
-                <button class="btn btn-danger btn-sm" @click="eliminarNota(item)">
+                <button
+                    class="btn btn-danger btn-sm"
+                    @click="eliminarNota(item)"
+                >
                     Eliminar
+                </button>
+                <button
+                    class="btn btn-warning btn-sm"
+                    @click="editarNota(item)"
+                >
+                    Editar
                 </button>
             </li>
         </ul>
@@ -44,6 +70,7 @@ export default {
         return {
             notas: [],
             nota: { nombre: "", descripcion: "" },
+            editarActivo: false,
             val: {
                 empty: "Debes completar todos los campos antes de guardar"
             }
@@ -75,10 +102,17 @@ export default {
             }
         },
         async eliminarNota(item, index) {
+            const me = this;
             const response = await axios.delete(`/notas/${item.id}`);
             if (response) {
-                this.notas.splice(index, 1);
+                me.notas.splice(index, 1);
             }
+        },
+        editarNota(nota) {
+            const me = this;
+            me.editarActivo = true;
+            me.nota.nombre = nota.nombre;
+            me.nota.descripcion = nota.descripcion;
         }
     }
 };

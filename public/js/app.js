@@ -2001,6 +2001,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2009,6 +2035,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         nombre: "",
         descripcion: ""
       },
+      editarActivo: false,
       val: {
         empty: "Debes completar todos los campos antes de guardar"
       }
@@ -2115,28 +2142,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-        var response;
+        var me, response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _context4.next = 2;
+                me = _this4;
+                _context4.next = 3;
                 return axios["delete"]("/notas/".concat(item.id));
 
-              case 2:
+              case 3:
                 response = _context4.sent;
 
                 if (response) {
-                  _this4.notas.splice(index, 1);
+                  me.notas.splice(index, 1);
                 }
 
-              case 4:
+              case 5:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
       }))();
+    },
+    editarNota: function editarNota(nota) {
+      var me = this;
+      me.editarActivo = true;
+      me.nota.nombre = nota.nombre;
+      me.nota.descripcion = nota.descripcion;
     }
   }
 });
@@ -38617,68 +38651,131 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h3", [_vm._v("Agregar Notas")]),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.agregar()
-          }
-        }
-      },
-      [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.nota.nombre,
-              expression: "nota.nombre"
-            }
-          ],
-          staticClass: "form-control mb-2",
-          attrs: { type: "text", placeholder: "Nombre" },
-          domProps: { value: _vm.nota.nombre },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+    _vm.editarActivo
+      ? _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.agregar()
               }
-              _vm.$set(_vm.nota, "nombre", $event.target.value)
             }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.nota.descripcion,
-              expression: "nota.descripcion"
-            }
-          ],
-          staticClass: "form-control mb-2",
-          attrs: { type: "text", placeholder: "Descripción" },
-          domProps: { value: _vm.nota.descripcion },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+          },
+          [
+            _c("h3", [_vm._v("Editar Nota")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.nota.nombre,
+                  expression: "nota.nombre"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Nombre" },
+              domProps: { value: _vm.nota.nombre },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.nota, "nombre", $event.target.value)
+                }
               }
-              _vm.$set(_vm.nota, "descripcion", $event.target.value)
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.nota.descripcion,
+                  expression: "nota.descripcion"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Descripción" },
+              domProps: { value: _vm.nota.descripcion },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.nota, "descripcion", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-success btn-sm" }, [
+              _vm._v("Guardar")
+            ])
+          ]
+        )
+      : _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.agregar()
+              }
             }
-          }
-        }),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-warning btn-sm" }, [
-          _vm._v("Guardar")
-        ])
-      ]
-    ),
+          },
+          [
+            _c("h3", [_vm._v("Agregar Nota")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.nota.nombre,
+                  expression: "nota.nombre"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Nombre" },
+              domProps: { value: _vm.nota.nombre },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.nota, "nombre", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.nota.descripcion,
+                  expression: "nota.descripcion"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Descripción" },
+              domProps: { value: _vm.nota.descripcion },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.nota, "descripcion", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-primary btn-sm" }, [
+              _vm._v("Agregar")
+            ])
+          ]
+        ),
     _vm._v(" "),
     _c("hr", { staticClass: "mt-3" }),
     _vm._v(" "),
@@ -38706,6 +38803,19 @@ var render = function() {
               }
             },
             [_vm._v("\n                Eliminar\n            ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-warning btn-sm",
+              on: {
+                click: function($event) {
+                  return _vm.editarNota(item)
+                }
+              }
+            },
+            [_vm._v("\n                Editar\n            ")]
           )
         ])
       }),
