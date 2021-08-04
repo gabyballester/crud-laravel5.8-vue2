@@ -14,9 +14,9 @@ class NotaController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             return Nota::where('user_id', auth()->id())->get();
-        }else{
+        } else {
             return view('home');
         }
     }
@@ -46,7 +46,7 @@ class NotaController extends Controller
         $nota->save();
 
         return $nota;
-    }  
+    }
     /**
      * Display the specified resource.
      *
@@ -78,7 +78,11 @@ class NotaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nota = Nota::find($id);
+        $nota->nombre = $request->nombre;
+        $nota->descripcion = $request->descripcion;
+        $nota->save();
+        return $nota;
     }
 
     /**
